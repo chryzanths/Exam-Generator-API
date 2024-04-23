@@ -30,6 +30,7 @@
 
       </style>
 
+
    </head>
 
    <body>
@@ -67,6 +68,39 @@
 
             </div>
          </section>
+
+         <section>
+            <?php
+
+               $title = $_POST['title'];
+               $easy = $_POST['easy'];
+               $average = $_POST['average'] - $easy;
+               $difficult = 100 - $_POST['average'];
+               $type = $_POST['type'];
+               $items = $_POST['items'];
+
+               switch($type) {
+                  case "mcq":
+                     $q_type = "Multiple Choice";
+                     break;
+                  case "des":
+                     $q_type = "Descriptive";
+                     break;
+                  case "tof":
+                     $q_type = "True or False";
+                     break;
+               }
+
+               echo "Title: $title <br/>";
+               echo "Difficulty: <br/>";
+               echo "Easy = $easy% <br/>";
+               echo "Average = $average% <br/>";
+               echo "Difficult = $difficult% <br/>";
+               echo "Quiz Type: $q_type <br/>";
+
+            ?>
+         </section>
+
       </div>
 
       <footer class="navbar navbar-default navbar-fixed-bottom">
