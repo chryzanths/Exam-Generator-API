@@ -1,5 +1,7 @@
 # Exam-Generator
 
+!! You have to make an uploads folder. It is not included here in due to github not saving empty folders. Name it 'uploads'!!
+
 ### index.php
 - home page
 - accepts files and customization input. DONE!
