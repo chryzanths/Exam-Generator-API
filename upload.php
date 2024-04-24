@@ -32,8 +32,6 @@
                     border-radius: 5px;
                     '>
                     {$file['name']}
-                    <br/>
-                    {$file['path']}
                     </li>";
             }
             echo "</ul>";

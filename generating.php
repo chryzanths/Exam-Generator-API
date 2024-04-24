@@ -57,7 +57,7 @@
          <section class="d-flex align-items-center justify-content-center">
             <div class="text-center">
 
-               <h1>Generating Exam...</h1>
+               <h1><strong>Generating Exam...</strong></h1>
                <p>Please wait for a moment.</p>
 
                <br/>
@@ -91,12 +91,15 @@
                      break;
                }
 
-               echo "Title: $title <br/>";
-               echo "Difficulty: <br/>";
-               echo "Easy = $easy% <br/>";
-               echo "Average = $average% <br/>";
-               echo "Difficult = $difficult% <br/>";
-               echo "Quiz Type: $q_type <br/>";
+               echo "<div class='text-center'>";
+               echo "<h3><strong>Title: </strong></h3><h4>$title</h4>";
+               echo "<h3><strong>Difficulty:</strong></h3>";
+               echo "<h4><strong>Easy = </strong>$easy% </h4>";
+               echo "<h4><strong>Average = </strong>$average% </h4>";
+               echo "<h4><strong>Difficult = </strong>$difficult% </h4><br/>";
+               echo "<h3><strong>Quiz Type: </strong></h3><h4>$q_type </h4>";
+               echo "<h3><strong>Number of Questions: </strong></h3><h4>$items</h4>";
+               echo "</div>";
 
             ?>
          </section>
