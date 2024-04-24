@@ -9,7 +9,7 @@
 
 ### generating.php
 - loading page as the user waits for the exam to be generated
-- display customization input (aayusin pa)
+- display customization input DONE!
 - disable muna button tas activate pag okay naka generate na ng questions
 - add button for downloading question and answer in a file (to do, di ko pa alam pano)
 
