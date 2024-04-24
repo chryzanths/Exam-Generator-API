@@ -78,12 +78,8 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">Prototype / Group Name</div>
+               <div class="navbar-brand">NEUPaperTrail</div>
             </div>
-
-            <ul class="nav navbar-nav navbar-right">
-               <li><a href="about.php">ABOUT</a></li>
-            </ul>
 
          </div>
       </nav>

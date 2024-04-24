@@ -39,12 +39,8 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">Prototype / Group Name</div>
+               <div class="navbar-brand">NEUPaperTrail</div>
             </div>
-
-            <ul class="nav navbar-nav navbar-right">
-               <li><a href="about.php">ABOUT</a></li>
-            </ul>
 
          </div>
       </nav>
@@ -59,7 +55,7 @@
 
                   session_start();                  
                   $customInfo = $_SESSION['customInfo'];
-                  $title = $customInfo[0]['title'];
+                  $title = $customInfo['title'];
                   $score = $_POST['score'];
                   $noOfQuestions = $_POST['noOfQuestions'];
                   $percentage = ($score / $noOfQuestions) * 100;

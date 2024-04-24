@@ -1,15 +1,13 @@
 <?php
 
-    session_start();
-
     // Define the path to the uploads folder
     $uploadsFolder = 'uploads/';
 
     // Get a list of all files in the uploads folder
-    $files = glob($uploadsFolder . '*');
+    $uploadfiles = glob($uploadsFolder . '*');
 
     // Loop through each file and delete it
-    foreach ($files as $file) {
+    foreach ($uploadfiles as $file) {
         // Check if the path is a file (not a directory)
         if (is_file($file)) {
             // Delete the file
@@ -17,14 +15,21 @@
         }
     }
 
-    echo '<script>';
-    echo 'var list = document.querySelector("ul");'; // Replace yourIframeId with the actual ID of your iframe
-    echo 'list.innerHTML = "";'; // Clear the content of the iframe
-    echo '</script>';
+    // Define the path to the session folder
+    $sessionFolder = 'C:/xampp/tmp';
 
-    // Optionally, you can also remove the session variable if needed
-    unset($_SESSION['uploaded_files']);
-    session_destroy();
+    // Get a list of all files in the session folder
+    $sessionfiles = scandir($sessionFolder);
+
+    // Loop through each file and delete it
+    foreach ($sessionfiles as $file) {
+        // Check if the path is a file (not a directory) and is a session file
+        if (is_file($sessionFolder . '/' . $file)) {
+            // Delete the session file
+            if (!unlink($sessionFolder . '/' . $file)) {
+                echo "Error deleting file: " . $sessionFolder . '/' . $file;
+            }
+        }
+    }
 
 ?>
-

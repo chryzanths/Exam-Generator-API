@@ -35,9 +35,30 @@
    <body>
       
       <?php
-
          
+         session_start();
 
+         if(!empty($_POST)){
+
+            $title = $_POST['title'];
+            $easy = $_POST['easy'];
+            $average = $_POST['average'] - $easy;
+            $difficult = 100 - $_POST['average'];
+            $type = $_POST['type'];
+            $items = $_POST['items'];
+
+            $customInfo = [
+               'title' => $title,
+               'easy' => $easy,
+               'average' => $average,
+               'difficult' => $difficult,
+               'type' => $type,
+               'items' => $items
+            ];
+
+            $_SESSION['customInfo'] = $customInfo;
+
+         }
 
       ?>
 
@@ -47,12 +68,8 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">Prototype / Group Name</div>
+               <div class="navbar-brand">NEUPaperTrail</div>
             </div>
-
-            <ul class="nav navbar-nav navbar-right">
-               <li><a href="about.php">ABOUT</a></li>
-            </ul>
 
          </div>
       </nav>
@@ -70,7 +87,9 @@
 
                <?php
 
-                  switch($_POST['type']) {
+                  $customInfo = $_SESSION['customInfo'];
+
+                  switch($customInfo['type']) {
                      case "mcq":
                         $next_page = "quiz-mcq.php";
                         break;
@@ -95,13 +114,15 @@
 
          <section>
             <?php
+               
+               $customInfo = $_SESSION['customInfo'];
 
-               $title = $_POST['title'];
-               $easy = $_POST['easy'];
-               $average = $_POST['average'] - $easy;
-               $difficult = 100 - $_POST['average'];
-               $type = $_POST['type'];
-               $items = $_POST['items'];
+               $title = $customInfo['title'];
+               $easy = $customInfo['easy'];
+               $average = $customInfo['average'];
+               $difficult = $customInfo['difficult'];
+               $type = $customInfo['type'];
+               $items = $customInfo['items'];
 
                switch($type) {
                   case "mcq":
@@ -124,18 +145,6 @@
                echo "<h3><strong>Quiz Type: </strong></h3><h4>$q_type </h4>";
                echo "<h3><strong>Number of Questions: </strong></h3><h4>$items</h4>";
                echo "</div>";
-
-               $customInfo = [
-                  'title' => $title,
-                  'easy' => $easy,
-                  'average' => $average,
-                  'difficult' => $difficult,
-                  'q_type' => $q_type,
-                  'items' => $items
-               ];
-
-              session_start();
-              $_SESSION['customInfo'] = $customInfo;
 
             ?>
          </section>
