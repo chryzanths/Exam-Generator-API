@@ -39,10 +39,6 @@
             echo "<p>No files uploaded.</p>";
         }
 
-        // Example: Save uploaded files as a session variable
-        session_start();
-        $_SESSION['uploaded_files'] = $uploadedFiles;
-
     }
 
 ?>

@@ -29,7 +29,7 @@
 
          .sm-box {
             height: fit-content;
-            padding: 5px;
+            padding: 10px;
             background-color: #d3d3d3;
             color: #000000;
             border-radius: 5px;
@@ -41,7 +41,22 @@
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            gap: 15px;
+            gap: 25px;
+         }
+
+         .selected {
+            background: #A7C7E7;
+            border: 2px solid #00008B ;
+         }
+
+         .correct {
+            background: #C1E1C1;
+            border: 1px solid #023020;
+         }
+
+         .wrong {
+            background: #FAA0A0;
+            border: 1px solid #4A0404;
          }
 
       </style>
@@ -71,23 +86,28 @@
       <div class="container-fluid">  
          <section class="d-flex align-items-center justify-content-center">
 
-            <div id="quiz-header">
-               <h1 class="page-header">Title of Exam | Question 30 out of 30</h1>
+            <div>
+               <h1 id="header" class="page-header"></h1>
             </div>
 
             <br/>
 
             <div>
-               <h3 class="text-center">Insert question here.</h4>
+               <h3 id="question" class="text-center">Insert question here.</h4>
                <br/>
                <div class="flex-box">
-                  <button class="sm-box">TRUE</button>
-                  <button class="sm-box">FALSE</button>
+                  <button id="true" value="0" onclick="selectChoice(this)" class="sm-box">TRUE</button>
+                  <button id="false" value="1" onclick="selectChoice(this)" class="sm-box">FALSE</button>
 
                </div>
                <br/>
-               <div class="col-md-2 col-md-offset-5">
-                  <button type="button" class="btn-block">Submit</button>
+               <div class="col-md-2 col-md-offset-3">
+                  <button id="submit-button" type="button" class="btn btn-block">Submit</button>
+               </div>
+               <div id="button-container">
+                  <div class="col-md-2 col-md-offset-2">
+                     <button id="next-button" type="button" class="btn btn-block" disabled onclick="nextQuestion()">Next</button>
+                  </div>
                </div>
             </div>
 
@@ -103,4 +123,5 @@
       </footer>
 
    </body>
+   <script src="js/script-tof.js"></script>
 </html>

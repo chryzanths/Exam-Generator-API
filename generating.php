@@ -30,11 +30,17 @@
 
       </style>
 
-
    </head>
 
    <body>
       
+      <?php
+
+         
+
+
+      ?>
+
       <!-- Navbar -->
 
       <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 50px;">
@@ -62,9 +68,27 @@
 
                <br/>
 
-               <div class="col-md-2 col-md-offset-5">
-                  <button type="button" class="btn btn-block disabled">Generating...</button>
-               </div>
+               <?php
+
+                  switch($_POST['type']) {
+                     case "mcq":
+                        $next_page = "quiz-mcq.php";
+                        break;
+                     case "tof":
+                        $next_page = "quiz-tof.php";
+                        break;
+                     case "des":
+                        $next_page = "quiz-des.php";
+                        break;
+                  }
+
+                  echo "<form action='$next_page'>
+                           <div class='col-md-2 col-md-offset-5'>
+                              <button type='submit' class='btn btn-block'>Take Quiz</button>
+                           </div>
+                        </form>"
+
+               ?>
 
             </div>
          </section>
@@ -100,6 +124,18 @@
                echo "<h3><strong>Quiz Type: </strong></h3><h4>$q_type </h4>";
                echo "<h3><strong>Number of Questions: </strong></h3><h4>$items</h4>";
                echo "</div>";
+
+               $customInfo = [
+                  'title' => $title,
+                  'easy' => $easy,
+                  'average' => $average,
+                  'difficult' => $difficult,
+                  'q_type' => $q_type,
+                  'items' => $items
+               ];
+
+              session_start();
+              $_SESSION['customInfo'] = $customInfo;
 
             ?>
          </section>

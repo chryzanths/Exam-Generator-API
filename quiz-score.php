@@ -55,21 +55,38 @@
          <section class="d-flex align-items-center justify-content-center">
             <div class="text-center">
 
-               <div id="quiz-header">
-                  <h1 class="page-header">Title of Exam</h1>
-               </div>
+               <?php
 
-               <br/>
+                  session_start();                  
+                  $customInfo = $_SESSION['customInfo'];
+                  $title = $customInfo[0]['title'];
+                  $score = $_POST['score'];
+                  $noOfQuestions = $_POST['noOfQuestions'];
+                  $percentage = ($score / $noOfQuestions) * 100;
 
-               <h3>YOUR SCORE:</h3>
-               <h1>70%</h1>
-               <h3>21 out of 30</h3>
+                  echo "
+                     <div id='quiz-header'>
+                        <h1 class='page-header'>$title</h1>
+                     </div>
 
-               <br/> <br/> <br/> <br/>
+                     <br/>
 
-               <div class="col-md-2 col-md-offset-5">
-                  <button type="button" class="btn-block">Retake</button>
-               </div>
+                     <h3>YOUR SCORE:</h3>
+                     <h1>$percentage%</h1>
+                     <h3>$score out of $noOfQuestions</h3>
+
+                     <br/> <br/> <br/> <br/>
+
+                  ";
+
+
+               ?>
+
+               <form action="generating.php">
+                  <div class="col-md-2 col-md-offset-5">
+                     <button type="submit" class="btn-block">Retake</button>
+                  </div>
+               </form>
 
             </div>
          </section>

@@ -29,7 +29,7 @@
 
          .sm-box {
             height: fit-content;
-            padding: 5px;
+            padding: 10px;
             background-color: #d3d3d3;
             color: #000000;
             border-radius: 5px;
@@ -41,22 +41,21 @@
             display: flex;
             flex-direction: column;
             align-items: stretch;
-            gap: 15px;
+            gap: 25px;
          }
 
-         #correctAnswerContainer {
-            background: #C1E1C1;
-            border: 1px solid #023020;
-            border-radius: 5px;
-            margin-top: 20px;
-            margin-bottom: 20px;
+         .selected {
+            background: #A7C7E7;
+            border: 2px solid #00008B ;
          }
 
          .correct {
+            background: #C1E1C1;
             border: 1px solid #023020;
          }
 
          .wrong {
+            background: #FAA0A0;
             border: 1px solid #4A0404;
          }
 
@@ -96,14 +95,13 @@
             <div>
                <h3 id="question" class="text-center">Insert question here.</h4>
                <br/>
-               <div class="col-md-6 col-md-offset-3">
-                  <input id="answerContainer" type="text" placeholder="Enter your answer" class="form-control">
+               <div class="flex-box">
+                  <button id="A" value="A" onclick="selectChoice(this)" class="sm-box">A. answer 1</button>
+                  <button id="B" value="B" onclick="selectChoice(this)" class="sm-box">B. answer 2</button>
+                  <button id="C" value="C" onclick="selectChoice(this)" class="sm-box">C. answer 3</button>
+                  <button id="D" value="D" onclick="selectChoice(this)" class="sm-box">D. answer 4</button>
                </div>
-               <div id="correctAnswer" style="display: none;">
-                  <br/> <br/>
-                  //this is where the correct answer will show
-               </div>
-               <br/> <br/> <br/> <br/>
+               <br/>
                <div class="col-md-2 col-md-offset-3">
                   <button id="submit-button" type="button" class="btn btn-block">Submit</button>
                </div>
@@ -126,5 +124,5 @@
       </footer>
 
    </body>
-   <script src="js/script-des.js"></script>
+   <script src="js/script-mcq.js"></script>
 </html>
