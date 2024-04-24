@@ -17,12 +17,6 @@
 
 <hr/>
 
-### quiz-portal.php
-- quiz starting page
-- // may delete this page para direkta na sa quiz agad after mag generate
-
-<hr/>
-
 ## Quiz Interfaces
 
 ## quiz-mc.php
