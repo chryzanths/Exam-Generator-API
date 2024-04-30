@@ -27,6 +27,10 @@
             padding: 5px;
          }
 
+         .navbar-brand a {
+            color: #FFFFFF !important;
+         }
+
       </style>
 
    </head>
@@ -39,11 +43,43 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">NEUPaperTrail</div>
+               <div class="navbar-brand"><a href="#" data-toggle="modal" data-target="#confirmationModal">NEUPaperTrail</a></div>
             </div>
+
+            <ul class="nav navbar-nav navbar-right">
+               <li><a href="#" data-toggle="modal" data-target="#confirmationModal">HOME</a></li>
+            </ul>
 
          </div>
       </nav>
+
+      <!-- Modal -->
+      <div class="modal fade" id="confirmationModal">
+         <div class="modal-dialog">
+            <div class="modal-content">
+
+               <div class="modal-header">
+                  <button class="close" data-dismiss="modal">&times;</button>
+                  <h5 class="modal-title">Confirmation</h5>
+
+               </div>
+
+               <div class="modal-body">
+                  Are you sure you want to go back to home page? <br/>
+                  The data you submitted or exam progress will be deleted.
+               </div>
+
+               <div class="modal-footer">
+                  
+                  <form action="index.php">
+                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                     <button type="submit" class="btn btn-danger">Go back to home page</button>
+                  </form>   
+               </div>
+
+            </div>
+         </div>
+      </div>
       
       <!-- Title Part And Content -->
 

@@ -13,6 +13,10 @@
             padding-bottom: 100px;
             padding-top: 100px;
          }
+         
+         .navbar-brand a {
+            color: #FFFFFF !important;
+         }
 
          section {
             height: 80%;
@@ -68,11 +72,43 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">NEUPaperTrail</div>
+               <div class="navbar-brand"><a href="#" data-toggle="modal" data-target="#confirmationModal">NEUPaperTrail</a></div>
             </div>
+
+            <ul class="nav navbar-nav navbar-right">
+               <li><a href="#" data-toggle="modal" data-target="#confirmationModal">HOME</a></li>
+            </ul>
 
          </div>
       </nav>
+
+      <!-- Modal -->
+      <div class="modal fade" id="confirmationModal">
+         <div class="modal-dialog">
+            <div class="modal-content">
+
+               <div class="modal-header">
+                  <button class="close" data-dismiss="modal">&times;</button>
+                  <h5 class="modal-title">Confirmation</h5>
+
+               </div>
+
+               <div class="modal-body">
+                  Are you sure you want to go back to home page? <br/>
+                  The data you submitted or exam progress will be deleted.
+               </div>
+
+               <div class="modal-footer">
+                  
+                  <form action="index.php">
+                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                     <button type="submit" class="btn btn-danger">Go back to home page</button>
+                  </form>   
+               </div>
+
+            </div>
+         </div>
+      </div>
       
       <!-- Title Part And Content-->
 
@@ -96,8 +132,8 @@
                      case "tof":
                         $next_page = "quiz-tof.php";
                         break;
-                     case "des":
-                        $next_page = "quiz-des.php";
+                     case "owa":
+                        $next_page = "quiz-owa.php";
                         break;
                   }
 
@@ -128,8 +164,8 @@
                   case "mcq":
                      $q_type = "Multiple Choice";
                      break;
-                  case "des":
-                     $q_type = "Descriptive";
+                  case "owa":
+                     $q_type = "Short Answer";
                      break;
                   case "tof":
                      $q_type = "True or False";

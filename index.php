@@ -39,7 +39,7 @@
             padding: 5px;
          }
 
-         a {
+         .navbar-brand a {
             color: #FFFFFF !important;
          }
 
@@ -78,12 +78,17 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">NEUPaperTrail</div>
+               <div class="navbar-brand"><a href="index.php">NEUPaperTrail</a></div>
             </div>
+
+            <ul class="nav navbar-nav navbar-right">
+               <li class="active"><a href="index.php">HOME</a></li>
+            </ul>
 
          </div>
       </nav>
-      
+
+
       <!-- Title Part And File Upload-->
 
       <div class="container-fluid">  
@@ -97,7 +102,7 @@
 
             <div class="row">
 
-               <h4 class="text-center">Select PDF files to upload (max. 1MB)</h4>
+               <h4 class="text-center">Select PDF files to upload</h4>
 
                <br/>
 
@@ -189,8 +194,8 @@
                   <label class=" control-label col-md-2 col-md-offset-1">Question Type</label>
                   <div class="col-md-7">
                      <div class="radio">
-                        <label><input type="radio" name="type" value="mcq">Multiple Choice</label>
-                        <label><input type="radio" name="type" value="des">Descriptive</label>
+                        <label><input type="radio" name="type" value="mcq">Multiple Choice&nbsp;&nbsp;</label>
+                        <label><input type="radio" name="type" value="owa">Short Answer&nbsp;&nbsp;</label>
                         <label><input type="radio" name="type" value="tof">True or False</label>
                      </div>
                   </div>
@@ -199,7 +204,7 @@
                <div class="form-group">
                   <label class=" control-label col-md-2 col-md-offset-1">Number of Items</label>
                   <div class="col-md-7">
-                     <input type="number" name="items" class="form-control" placeholder="1-100" min="1" max="100">
+                     <input type="number" name="items" class="form-control" placeholder="1-10" min="1" max="10">
                   </div>
                </div>
 
