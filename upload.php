@@ -3,7 +3,10 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
         // Handle file uploads
 
-        $uploadedFiles = array();
+        session_start();
+
+        // $uploadedFiles = array();
+        $uploadedFiles = isset($_SESSION['uploadedFiles']) ? $_SESSION['uploadedFiles'] : array();
 
         foreach ($_FILES['files']['tmp_name'] as $index => $tmpName) {
             $fileName = $_FILES['files']['name'][$index];
@@ -18,6 +21,8 @@
                 );
             }
         }
+
+        $_SESSION['uploadedFiles'] = $uploadedFiles;
 
         if (!empty($uploadedFiles)) {
             echo "<ul>";

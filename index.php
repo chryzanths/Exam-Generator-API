@@ -109,7 +109,7 @@
                <form action="upload.php" method="POST" enctype="multipart/form-data" target="showUploads">
 
                   <div class="col-md-5 col-md-offset-3">
-                     <input class="form-control" type="file" name="files[]" multiple>
+                     <input class="form-control" type="file" name="files[]" accept=".pdf" multiple>
                   </div>
 
                   <div class="col-md-2">
@@ -155,7 +155,7 @@
          <section class="row">
             <div class="text-center">
                <h2>Exam Customization</h2>
-               <p>Edit difficulty and question type to be generated.</p>
+               <p>Supply the details and select from the options below.</p>
             </div>
             
             <br/>
@@ -165,38 +165,28 @@
                <div class="form-group">
                   <label class="control-label col-md-2 col-md-offset-1">Title</label>
                   <div class="col-md-7">
-                     <input type="text" class="form-control" name="title">
+                     <input type="text" class="form-control" name="title" placeholder="Set exam title here">
                   </div>
                </div>
 
-               <h4 class="text-center">Difficulty</h4>
-               <p class="text-center">Easy | Average | Difficult</p>
-
-
-               <!-- Slider Try -->
                <div class="form-group">
-                  <div class="col-md-6 col-md-offset-3">   
-                     <div class="double_range_slider_box">
-                        <div class="double_range_slider">
-                           <span class="range_track" id="range_track"></span>
-                     
-                           <input name="easy" type="range" class="min slider" min="0" max="100" value="33" step="0" />
-                           <input name="average" type="range" class="max slider" min="0" max="100" value="66" step="0" />
-                     
-                           <div class="minvalue"></div>
-                           <div class="maxvalue"></div>
-                        </div>
+                  <label class=" control-label col-md-2 col-md-offset-1">Difficulty</label>
+                  <div class="col-md-7">
+                     <div class="radio">
+                        <label><input type="radio" name="difficulty" value="Easy">Easy&nbsp;&nbsp;</label>
+                        <label><input type="radio" name="difficulty" value="Average">Average&nbsp;&nbsp;</label>
+                        <label><input type="radio" name="difficulty" value="Difficult">Difficult</label>
                      </div>
                   </div>
-               </div>   
+               </div>
 
                <div class="form-group">
                   <label class=" control-label col-md-2 col-md-offset-1">Question Type</label>
                   <div class="col-md-7">
                      <div class="radio">
                         <label><input type="radio" name="type" value="mcq">Multiple Choice&nbsp;&nbsp;</label>
-                        <label><input type="radio" name="type" value="owa">Short Answer&nbsp;&nbsp;</label>
-                        <label><input type="radio" name="type" value="tof">True or False</label>
+                        <label><input type="radio" name="type" value="owa">Identification&nbsp;&nbsp;</label>
+                        <!-- <label><input type="radio" name="type" value="tof">True or False</label> -->
                      </div>
                   </div>
                </div>

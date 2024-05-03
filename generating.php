@@ -45,17 +45,13 @@
          if(!empty($_POST)){
 
             $title = $_POST['title'];
-            $easy = $_POST['easy'];
-            $average = $_POST['average'] - $easy;
-            $difficult = 100 - $_POST['average'];
+            $difficulty = $_POST['difficulty'];
             $type = $_POST['type'];
             $items = $_POST['items'];
 
             $customInfo = [
                'title' => $title,
-               'easy' => $easy,
-               'average' => $average,
-               'difficult' => $difficult,
+               'difficulty' => $difficulty,
                'type' => $type,
                'items' => $items
             ];
@@ -154,9 +150,7 @@
                $customInfo = $_SESSION['customInfo'];
 
                $title = $customInfo['title'];
-               $easy = $customInfo['easy'];
-               $average = $customInfo['average'];
-               $difficult = $customInfo['difficult'];
+               $difficulty = $customInfo['difficulty'];
                $type = $customInfo['type'];
                $items = $customInfo['items'];
 
@@ -165,7 +159,7 @@
                      $q_type = "Multiple Choice";
                      break;
                   case "owa":
-                     $q_type = "Short Answer";
+                     $q_type = "Identification";
                      break;
                   case "tof":
                      $q_type = "True or False";
@@ -174,10 +168,7 @@
 
                echo "<div class='text-center'>";
                echo "<h3><strong>Title: </strong></h3><h4>$title</h4>";
-               echo "<h3><strong>Difficulty:</strong></h3>";
-               echo "<h4><strong>Easy = </strong>$easy% </h4>";
-               echo "<h4><strong>Average = </strong>$average% </h4>";
-               echo "<h4><strong>Difficult = </strong>$difficult% </h4><br/>";
+               echo "<h3><strong>Difficulty: </strong></h3><h4>$difficulty</h4>";
                echo "<h3><strong>Quiz Type: </strong></h3><h4>$q_type </h4>";
                echo "<h3><strong>Number of Questions: </strong></h3><h4>$items</h4>";
                echo "</div>";
