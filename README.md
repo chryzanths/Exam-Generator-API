@@ -1,6 +1,6 @@
 # Exam-Generator
 
-!! You have to make an uploads folder. It is not included here in due to github not saving empty folders. Name it 'uploads'!!
+!! You have to make an uploads folder. It is not included here because GitHub does not allow saving empty folders. Name it 'uploads'!!
 
 ### index.php
 - home page
@@ -25,8 +25,8 @@
 ## quiz-tof.php
 - quiz page for true or false type question
 
-## quiz-des.php
-- quiz page for description/identification type question
+## quiz-owa.php
+- quiz page for short answer. These are questions with one-word answers. This is not case-sensitive.
 
 <hr/>
 

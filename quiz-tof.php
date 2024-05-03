@@ -13,6 +13,10 @@
             padding-bottom: 100px;
             padding-top: 50px;
          }
+
+         .navbar-brand a {
+            color: #FFFFFF !important;
+         }
          
          section {
             height: 80%;
@@ -59,6 +63,23 @@
             border: 1px solid #4A0404;
          }
 
+         .quit, .quit a{
+            border-radius: 10px;
+            background: #FF0000;
+            color: #FFFFFF;
+            padding: 5px;
+         }
+
+         .pos-rel {
+            position: relative;
+         }
+
+         .fix-right{
+            position: absolute;
+            top: 0;
+            right: 0;
+         }
+
       </style>
 
    </head>
@@ -71,19 +92,52 @@
          <div class="container">
 
             <div class="navbar-header">
-               <div class="navbar-brand">NEUPaperTrail</div>
+               <div class="navbar-brand"><a href="#" data-toggle="modal" data-target="#confirmationModal">NEUPaperTrail</a></div>
             </div>
+
+            <ul class="nav navbar-nav navbar-right">
+               <li><a href="#" data-toggle="modal" data-target="#confirmationModal">HOME</a></li>
+            </ul>
 
          </div>
       </nav>
+
+      <!-- Modal -->
+      <div class="modal fade" id="confirmationModal">
+         <div class="modal-dialog">
+            <div class="modal-content">
+
+               <div class="modal-header">
+                  <button class="close" data-dismiss="modal">&times;</button>
+                  <h5 class="modal-title">Confirmation</h5>
+
+               </div>
+
+               <div class="modal-body">
+                  Are you sure you want to go back to home page? <br/>
+                  The data you submitted or exam progress will be deleted.
+               </div>
+
+               <div class="modal-footer">
+                  
+                  <form action="index.php">
+                     <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+                     <button type="submit" class="btn btn-danger">Go back to home page</button>
+                  </form>   
+               </div>
+
+            </div>
+         </div>
+      </div>
 
       <!-- Use javascript to automatically put details -->
 
       <div class="container-fluid">  
          <section class="d-flex align-items-center justify-content-center">
 
-            <div>
+            <div class="pos-rel">
                <h1 id="header" class="page-header"></h1>
+               <button class="quit fix-right"><a href="generating.php">QUIT</a></button>
             </div>
 
             <br/>

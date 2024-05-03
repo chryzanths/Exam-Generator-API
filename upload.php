@@ -3,7 +3,13 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
     // Handle file uploads
 
+
     $uploadedFiles = array();
+
+    session_start();
+
+    // $uploadedFiles = array();
+    $uploadedFiles = isset($_SESSION['uploadedFiles']) ? $_SESSION['uploadedFiles'] : array();
 
     foreach ($_FILES['files']['tmp_name'] as $index => $tmpName) {
         $fileName = $_FILES['files']['name'][$index];
@@ -21,6 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
                 'name' => $fileName,
                 'path' => $uploadPath
             );
+
+        $_SESSION['uploadedFiles'] = $uploadedFiles;
+
+        if (!empty($uploadedFiles)) {
+            echo "<ul>";
+            foreach ($uploadedFiles as $file) {
+                echo "<li style='
+                    width: 80%;
+                    height: fit-content;
+                    padding: 5px 10px 5px 10px;
+                    margin: 10px;
+                    background-color: #FFFFFF;
+                    color: #000000;
+                    border-radius: 5px;
+                    '>
+                    {$file['name']}
+                    </li>";
+            }
+            echo "</ul>";
+
         } else {
             echo "Failed to move uploaded file '{$fileName}'.";
         }

@@ -56,8 +56,14 @@
             padding: 5px;
          }
 
+
          p{
             margin: 0;
+         }
+
+         .navbar-brand a {
+            color: #FFFFFF !important;
+
          }
 
          .txt-black {
@@ -76,25 +82,45 @@
          <div class="container">
 
             <div class="navbar-header">
+
                <div class="navbar-brand">Prototype / Group Name</div>
             </div>
 
             <ul class="nav navbar-nav navbar-right">
                <li><a href="about.php">ABOUT</a></li>
+
+               <div class="navbar-brand"><a href="index.php">NEUPaperTrail</a></div>
+            </div>
+
+            <ul class="nav navbar-nav navbar-right">
+               <li class="active"><a href="index.php">HOME</a></li>
+
             </ul>
 
          </div>
       </nav>
-      
+
+
       <!-- Title Part And File Upload-->
 
       <div class="container-fluid">  
 
          <section class="d-flex align-items-center justify-content-center row">
 
+
             <div class="text-center">
                <h1>Automated Exam Generator</h1>
                <p>Select PDF files to upload (max. 1MB)</p>
+
+            <div class="text-center heading row">
+               <h1 class="page-header">Automated Exam Generator</h1>
+               
+            </div>  
+
+            <div class="row">
+
+               <h4 class="text-center">Select PDF files to upload</h4>
+
 
                <br/>
                
@@ -102,7 +128,21 @@
                   <input type="file" placeholder="Upload File" class="form-control selectpdf">
                </div>
 
+
                <br/><br/><br/>
+
+               <form action="upload.php" method="POST" enctype="multipart/form-data" target="showUploads">
+
+                  <div class="col-md-5 col-md-offset-3">
+                     <input class="form-control" type="file" name="files[]" accept=".pdf" multiple>
+                  </div>
+
+                  <div class="col-md-2">
+                     <button type="submit" class="btn">Upload</button>
+                  </div>
+
+               </form>
+
 
                <div class="col-md-2 col-md-offset-5">
                   <button type="button" class="btn-block upload">Upload</button>
@@ -135,7 +175,7 @@
          <section class="row">
             <div class="text-center">
                <h2>Exam Customization</h2>
-               <p>Edit difficulty and question type to be generated.</p>
+               <p>Supply the details and select from the options below.</p>
             </div>
             
             <br/>
@@ -145,6 +185,7 @@
                <div class="form-group">
                   <label class="control-label col-md-2 col-md-offset-1">Title</label>
                   <div class="col-md-7">
+
                      <input type="text" class="form-control">
                   </div>
                </div>
@@ -172,13 +213,34 @@
                   </div>
                </div>
 
+                     <input type="text" class="form-control" name="title" placeholder="Set exam title here">
+                  </div>
+               </div>
+
+               <div class="form-group">
+                  <label class=" control-label col-md-2 col-md-offset-1">Difficulty</label>
+                  <div class="col-md-7">
+                     <div class="radio">
+                        <label><input type="radio" name="difficulty" value="Easy">Easy&nbsp;&nbsp;</label>
+                        <label><input type="radio" name="difficulty" value="Average">Average&nbsp;&nbsp;</label>
+                        <label><input type="radio" name="difficulty" value="Difficult">Difficult</label>
+                     </div>
+                  </div>
+               </div>
+
                <div class="form-group">
                   <label class=" control-label col-md-2 col-md-offset-1">Question Type</label>
                   <div class="col-md-7">
                      <div class="radio">
+
                         <label><input type="radio" name="questionType" value="Multiple Choice">Multiple Choice</label>
                         <label><input type="radio" name="questionType" value="Descriptive">Descriptive</label>
                         <label><input type="radio" name="questionType" value="True or False">True or False</label>
+
+                        <label><input type="radio" name="type" value="mcq">Multiple Choice&nbsp;&nbsp;</label>
+                        <label><input type="radio" name="type" value="owa">Identification&nbsp;&nbsp;</label>
+                        <!-- <label><input type="radio" name="type" value="tof">True or False</label> -->
+
                      </div>
                   </div>
                </div>
@@ -186,7 +248,9 @@
                <div class="form-group">
                   <label class=" control-label col-md-2 col-md-offset-1">Number of Items</label>
                   <div class="col-md-7">
+
                      <input type="number" class="form-control" placeholder="1-100" min="1" max="100">
+                     <input type="number" name="items" class="form-control" placeholder="1-10" min="1" max="10">
                   </div>
                </div>
 
