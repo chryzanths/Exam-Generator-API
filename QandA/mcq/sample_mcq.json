@@ -1,0 +1,85 @@
+{
+    "qna": [
+      {
+        "question": "What is the primary function of the CPU in a computer?",
+        "A": "Storing data",
+        "B": "Executing instructions",
+        "C": "Displaying information",
+        "D": "Interacting with users",
+        "answer": "B"
+      },
+      {
+        "question": "Which type of memory provides temporary storage for data and instructions that the CPU needs to access quickly?",
+        "A": "RAM",
+        "B": "ROM",
+        "C": "Hard drive",
+        "D": "SSD",
+        "answer": "A"
+      },
+      {
+        "question": "What do input devices like keyboards and mice allow users to do?",
+        "A": "Display information",
+        "B": "Interact with the computer",
+        "C": "Store data",
+        "D": "Process instructions",
+        "answer": "B"
+      },
+      {
+        "question": "Which of the following is NOT an output device?",
+        "A": "Monitor",
+        "B": "Printer",
+        "C": "Keyboard",
+        "D": "Speaker",
+        "answer": "C"
+      },
+      {
+        "question": "How many digits does binary code use to represent data and instructions?",
+        "A": "Four",
+        "B": "Eight",
+        "C": "Ten",
+        "D": "Two",
+        "answer": "D"
+      },
+      {
+        "question": "What type of devices are hard disk drives (HDDs) and solid-state drives (SSDs)?",
+        "A": "Input devices",
+        "B": "Output devices",
+        "C": "Storage devices",
+        "D": "Processing devices",
+        "answer": "C"
+      },
+      {
+        "question": "What has the development of computers enabled in fields such as scientific research and data analysis?",
+        "A": "Slower data processing",
+        "B": "Limited data storage",
+        "C": "Advancements and innovations",
+        "D": "Decreased use of technology",
+        "answer": "C"
+      },
+      {
+        "question": "Which type of computer is tailored to specific needs and applications, such as personal computers and servers?",
+        "A": "Mainframe computer",
+        "B": "Supercomputer",
+        "C": "Desktop computer",
+        "D": "Mini computer",
+        "answer": "C"
+      },
+      {
+        "question": "What has the internet, which heavily relies on computer networks, transformed?",
+        "A": "Communication and information access",
+        "B": "Security and privacy",
+        "C": "Data storage and processing",
+        "D": "Computer hardware",
+        "answer": "A"
+      },
+      {
+        "question": "What role are computers expected to play in the future as technology continues to evolve?",
+        "A": "Decrease in importance",
+        "B": "Limited use",
+        "C": "Significant role in driving innovation",
+        "D": "Obsolete technology",
+        "answer": "C"
+      }
+    ]
+  }
+  

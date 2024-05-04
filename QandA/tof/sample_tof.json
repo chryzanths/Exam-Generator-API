@@ -1,0 +1,44 @@
+{
+  "qna": [
+    {
+      "question": "The CPU is responsible for executing instructions and managing the flow of data within a computer.",
+      "answer": "true"
+    },
+    {
+      "question": "ROM provides temporary storage for data and instructions that the CPU needs to access quickly.",
+      "answer": "false"
+    },
+    {
+      "question": "Input devices like keyboards and mice allow users to interact with computers by entering commands or data.",
+      "answer": "true"
+    },
+    {
+      "question": "Printers are examples of input devices.",
+      "answer": "false"
+    },
+    {
+      "question": "Binary code uses four digits to represent data and instructions.",
+      "answer": "false"
+    },
+    {
+      "question": "Hard disk drives (HDDs) and solid-state drives (SSDs) are types of storage devices.",
+      "answer": "true"
+    },
+    {
+      "question": "The development of computers has not impacted fields such as scientific research and data analysis.",
+      "answer": "false"
+    },
+    {
+      "question": "Supercomputers are generally tailored to specific needs and applications, such as personal use.",
+      "answer": "false"
+    },
+    {
+      "question": "The internet has not transformed how people communicate and access information.",
+      "answer": "false"
+    },
+    {
+      "question": "Computers are expected to play a decreasingly significant role in the future as technology evolves.",
+      "answer": "false"
+    }
+  ]
+}

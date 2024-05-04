@@ -11,7 +11,7 @@
       <title>Exam Gen</title>
       <script type="module" src="api.js"></script>
       <!-- Include the PDF.js library -->
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
       <link rel="stylesheet" href="css/bootstrap.min.css">
       <link rel="stylesheet" href="css/bootstrap-theme.min.css">
       <script src="js/jquery.js"></script>
@@ -40,25 +40,12 @@
             align-items: stretch;
             gap: 10px;
          }
-
-         .sm-box {
-            height: fit-content;
-            padding: 5px;
-            background-color: #FFFFFF;
-            color: #000000;
-            border-radius: 5px;
-         }
          
          button {
             border-radius: 10px;
             background: #000000;
             color: #FFFFFF;
             padding: 5px;
-         }
-
-
-         p{
-            margin: 0;
          }
 
          .navbar-brand a {
@@ -70,7 +57,25 @@
             color: #000000;
          }
 
+         .heading {
+            padding-bottom: 20px;
+         }
+
+         iframe {
+            border-style: none;
+            width: 100%;
+            max-height: 500px;
+         }
+
       </style>
+
+      <script>
+         
+         var xhr = new XMLHttpRequest();
+         xhr.open('GET', 'cleanup.php', true); // Synchronous request
+         xhr.send();
+         
+      </script>
 
    </head>
 
@@ -82,13 +87,6 @@
          <div class="container">
 
             <div class="navbar-header">
-
-               <div class="navbar-brand">Prototype / Group Name</div>
-            </div>
-
-            <ul class="nav navbar-nav navbar-right">
-               <li><a href="about.php">ABOUT</a></li>
-
                <div class="navbar-brand"><a href="index.php">NEUPaperTrail</a></div>
             </div>
 
@@ -107,29 +105,15 @@
 
          <section class="d-flex align-items-center justify-content-center row">
 
-
-            <div class="text-center">
-               <h1>Automated Exam Generator</h1>
-               <p>Select PDF files to upload (max. 1MB)</p>
-
             <div class="text-center heading row">
                <h1 class="page-header">Automated Exam Generator</h1>
-               
             </div>  
 
             <div class="row">
 
                <h4 class="text-center">Select PDF files to upload</h4>
 
-
                <br/>
-               
-               <div class="col-md-6 col-md-offset-3">
-                  <input type="file" placeholder="Upload File" class="form-control selectpdf">
-               </div>
-
-
-               <br/><br/><br/>
 
                <form action="upload.php" method="POST" enctype="multipart/form-data" target="showUploads">
 
@@ -143,10 +127,6 @@
 
                </form>
 
-
-               <div class="col-md-2 col-md-offset-5">
-                  <button type="button" class="btn-block upload">Upload</button>
-               </div>
             </div>  
 
          </section>
@@ -154,20 +134,25 @@
          <!-- Files Uploaded -->
 
          <section class="row">
+
+            <div class="text-center">
+               <p>Note: Refresh the page to clear upload files</p>
+            </div>
+
             <div class="container-fluid box col-md-6 col-md-offset-3">
                <h3 class="text-center" style="color: #FFFFFF;">Files Uploaded</h3>
 
                <div id="files-container">
 
-                  <!-- Insert file uploaded here via javascript. Sample below -->
-
-                  <div>
-                     <div class="alert sm-box text-center"><a href="#" class="close txt-black" data-dismiss="alert">&times;</a>File.pdf</div>
-                  </div>
+                  <!-- Show files uploaded here -->
+                  <iframe id="showUploads" name="showUploads"></iframe>
 
                </div>
 
             </div>
+
+            <iframe name="hidden_iframe" style="display:none;"></iframe>
+   
          </section>
 
          <!-- Customization -->
@@ -180,39 +165,11 @@
             
             <br/>
 
-            <form class="form-horizontal">
+            <form class="form-horizontal" action="generating.php" method="POST">
 
                <div class="form-group">
                   <label class="control-label col-md-2 col-md-offset-1">Title</label>
                   <div class="col-md-7">
-
-                     <input type="text" class="form-control">
-                  </div>
-               </div>
-
-               <h4 class="text-center">Difficulty</h4>
-
-               <div class="form-group">
-                  <label class=" control-label col-md-2 col-md-offset-1">Easy</label>
-                  <div class="col-md-7">
-                     <input type="text" class="form-control" placeholder="%">
-                  </div>
-               </div>
-
-               <div class="form-group">
-                  <label class=" control-label col-md-2 col-md-offset-1">Medium</label>
-                  <div class="col-md-7">
-                     <input type="text" class="form-control" placeholder="%">
-                  </div>
-               </div>
-
-               <div class="form-group">
-                  <label class=" control-label col-md-2 col-md-offset-1">Hard</label>
-                  <div class="col-md-7">
-                     <input type="text" class="form-control" placeholder="%">
-                  </div>
-               </div>
-
                      <input type="text" class="form-control" name="title" placeholder="Set exam title here">
                   </div>
                </div>
@@ -233,10 +190,6 @@
                   <div class="col-md-7">
                      <div class="radio">
 
-                        <label><input type="radio" name="questionType" value="Multiple Choice">Multiple Choice</label>
-                        <label><input type="radio" name="questionType" value="Descriptive">Descriptive</label>
-                        <label><input type="radio" name="questionType" value="True or False">True or False</label>
-
                         <label><input type="radio" name="type" value="mcq">Multiple Choice&nbsp;&nbsp;</label>
                         <label><input type="radio" name="type" value="owa">Identification&nbsp;&nbsp;</label>
                         <!-- <label><input type="radio" name="type" value="tof">True or False</label> -->
@@ -248,8 +201,6 @@
                <div class="form-group">
                   <label class=" control-label col-md-2 col-md-offset-1">Number of Items</label>
                   <div class="col-md-7">
-
-                     <input type="number" class="form-control" placeholder="1-100" min="1" max="100">
                      <input type="number" name="items" class="form-control" placeholder="1-10" min="1" max="10">
                   </div>
                </div>
@@ -332,7 +283,7 @@
       </script>
 
       <!-- Include the OpenAI API script -->
-      <script src="api.js"></script>
+      <!-- <script src="api.js"></script> -->
 
    </body>
 </html>

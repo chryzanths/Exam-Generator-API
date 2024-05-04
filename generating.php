@@ -6,6 +6,8 @@
       <link rel="stylesheet" href="css/bootstrap-theme.min.css">
       <script src="js/jquery.js"></script>
       <script src="js/bootstrap.min.js"></script>
+      <script type="module" src="api.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
       <style>
 
@@ -185,4 +187,59 @@
       </footer>
 
    </body>
+   <script>
+
+      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+
+      <?php
+      $uploadedFiles = array();
+
+      foreach ($_SESSION['uploadedFiles'] as $file) {
+         $uploadedFiles[] = $file['path'];
+      }
+      ?>
+
+      let uploadedfiles = <?php echo json_encode($uploadedFiles); ?>;
+      console.log(uploadedfiles);
+      let alltext=""; // Initialize variable to store all extracted text
+
+      uploadedfiles.forEach(file => {
+         extractText(file, false);
+      });
+
+      async function extractText(url, pass) {
+         try {
+            console.log("URL:", url); // Debugging statement
+            let pdf;
+            if (pass) {
+               pdf = await pdfjsLib.getDocument({ url: url }).promise; // Get the PDF document with password
+            } else {
+               pdf = await pdfjsLib.getDocument(url).promise; // Get the PDF document without password
+            }
+            
+            console.log(pdf);
+
+            let pages = pdf.numPages; // Get the total number of pages in the PDF
+            for (let i = 1; i <= pages; i++) {
+               let page = await pdf.getPage(i); // Get the page object for each page
+               console.log(page);
+               let txt = await page.getTextContent(); // Get the text content of the page
+               console.log(txt);
+               let text = txt.items.map((s) => s.str).join(""); // Concatenate the text items into a single string
+               console.log(text);
+               alltext += text + "\n"; // Add the extracted text to the variable
+               console.log(alltext);
+            }
+            // Open a new window to display the extracted text
+            let newWindow = window.open("", "Extracted Text", "width=600,height=400");
+            newWindow.document.write("<pre>" + alltext + "</pre>"); // Write the extracted text to the new window
+            // Generate quiz for the extracted text
+            //generateQuiz(alltext);
+         } catch (err) {
+            console.log("Error extracting text: ", err);
+         }
+      }
+
+
+   </script>
 </html>
