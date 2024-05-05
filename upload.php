@@ -1,15 +1,19 @@
 <?php
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
-        // Handle file uploads
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['files'])) {
+    // Handle file uploads
 
-        session_start();
+    session_start();
 
-        // $uploadedFiles = array();
-        $uploadedFiles = isset($_SESSION['uploadedFiles']) ? $_SESSION['uploadedFiles'] : array();
+    $uploadedFiles = isset($_SESSION['uploadedFiles']) ? $_SESSION['uploadedFiles'] : array();
 
-        foreach ($_FILES['files']['tmp_name'] as $index => $tmpName) {
-            $fileName = $_FILES['files']['name'][$index];
+    foreach ($_FILES['files']['tmp_name'] as $index => $tmpName) {
+        $fileName = $_FILES['files']['name'][$index];
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+        $allowedExtensions = array('pdf');
+
+        // Check if the file extension is allowed (PDF)
+        if (in_array($fileExtension, $allowedExtensions)) {
             $uploadDir = 'uploads/'; // Specify the destination directory
             $uploadPath = $uploadDir . $fileName;
 
@@ -25,29 +29,32 @@
                     'path' => $uploadPath
                 );
             }
-        }
-
-        $_SESSION['uploadedFiles'] = $uploadedFiles;
-
-        if (!empty($uploadedFiles)) {
-            echo "<ul>";
-            foreach ($uploadedFiles as $file) {
-                echo "<li style='
-                    width: 80%;
-                    height: fit-content;
-                    padding: 5px 10px 5px 10px;
-                    margin: 10px;
-                    background-color: #FFFFFF;
-                    color: #000000;
-                    border-radius: 5px;
-                    '>
-                    {$file['name']}
-                    </li>";
-            }
-            echo "</ul>";
         } else {
-            echo "<p>No files uploaded.</p>";
+            echo "<script>alert('Please upload only PDF files.');</script>";
         }
     }
+
+    $_SESSION['uploadedFiles'] = $uploadedFiles;
+
+    if (!empty($uploadedFiles)) {
+        echo "<ul>";
+        foreach ($uploadedFiles as $file) {
+            echo "<li style='
+                width: 80%;
+                height: fit-content;
+                padding: 5px 10px 5px 10px;
+                margin: 10px;
+                background-color: #FFFFFF;
+                color: #000000;
+                border-radius: 5px;
+                '>
+                {$file['name']}
+                </li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p>No files uploaded.</p>";
+    }
+}
 
 ?>
