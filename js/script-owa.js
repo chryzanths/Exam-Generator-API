@@ -112,6 +112,6 @@ submitButton.addEventListener("click", function() {
     if(aElement.value) {
         submitAnswer();
     } else {
-        alert("Please select an answer.");
+        alert("Please input an answer.");
     }
 })
