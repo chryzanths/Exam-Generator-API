@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
    <head>
+      <!-- Set the character encoding to UTF-8 -->
+      <meta charset="UTF-8">
+      <!-- Specify the compatibility mode for Internet Explorer -->
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- Set the viewport to control the layout on mobile devices -->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Set the title of the web page -->
       <title>Exam Gen</title>
+      <script type="module" src="api.js"></script>
+      <!-- Include the PDF.js library -->
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
       <link rel="stylesheet" href="css/bootstrap.min.css">
       <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-      <link rel="stylesheet" href="css/slider.css">
       <script src="js/jquery.js"></script>
       <script src="js/bootstrap.min.js"></script>
 
@@ -35,12 +44,13 @@
          button {
             border-radius: 10px;
             background: #000000;
-            color: #FFFFFF !important;
+            color: #FFFFFF;
             padding: 5px;
          }
 
          .navbar-brand a {
             color: #FFFFFF !important;
+
          }
 
          .txt-black {
@@ -57,15 +67,14 @@
             max-height: 500px;
          }
 
-
       </style>
 
       <script>
-   
+         
          var xhr = new XMLHttpRequest();
          xhr.open('GET', 'cleanup.php', true); // Synchronous request
          xhr.send();
-           
+         
       </script>
 
    </head>
@@ -83,6 +92,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                <li class="active"><a href="index.php">HOME</a></li>
+
             </ul>
 
          </div>
@@ -93,11 +103,10 @@
 
       <div class="container-fluid">  
 
-         <section>
+         <section class="d-flex align-items-center justify-content-center row">
 
             <div class="text-center heading row">
                <h1 class="page-header">Automated Exam Generator</h1>
-               
             </div>  
 
             <div class="row">
@@ -118,11 +127,10 @@
 
                </form>
 
-            </div>
-               
+            </div>  
 
          </section>
-         
+
          <!-- Files Uploaded -->
 
          <section class="row">
@@ -134,20 +142,17 @@
             <div class="container-fluid box col-md-6 col-md-offset-3">
                <h3 class="text-center" style="color: #FFFFFF;">Files Uploaded</h3>
 
-               <div name="files-container">
+               <div id="files-container">
 
                   <!-- Show files uploaded here -->
                   <iframe id="showUploads" name="showUploads"></iframe>
-
-                  <!-- <div>
-                     <div class="alert sm-box text-center"><a href="#" class="close txt-black" data-dismiss="alert">&times;</a>File.pdf</div>
-                  </div> -->
 
                </div>
 
             </div>
 
             <iframe name="hidden_iframe" style="display:none;"></iframe>
+   
          </section>
 
          <!-- Customization -->
@@ -184,9 +189,11 @@
                   <label class=" control-label col-md-2 col-md-offset-1">Question Type</label>
                   <div class="col-md-7">
                      <div class="radio">
+
                         <label><input type="radio" name="type" value="mcq">Multiple Choice&nbsp;&nbsp;</label>
                         <label><input type="radio" name="type" value="owa">Identification&nbsp;&nbsp;</label>
                         <!-- <label><input type="radio" name="type" value="tof">True or False</label> -->
+
                      </div>
                   </div>
                </div>
@@ -200,7 +207,7 @@
 
                <div class="form-group">
                   <div class="col-md-2 col-md-offset-5">
-                     <button class="btn-block" type="submit" name="submit">Generate</button>
+                     <button class="btn-block generate">Generate</button>
                   </div>
                </div>
                
@@ -215,7 +222,68 @@
             <p class="text-center" style="padding: 10px;">© 2024 Automated Exam. All rights reserved.</p>
          </div>
       </footer>
-   
+
+      <!-- Script for extracting and displaying text in a new window -->
+      <script>
+         // Set the worker source for PDF.js library
+         pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+      
+         // Get references to various elements
+         let pdfinput = document.querySelector(".selectpdf"); // Reference to the PDF file input field
+         let upload = document.querySelector(".upload"); // Reference to the upload button
+         let generateBtn = document.querySelector(".generate"); // Reference to the generate button
+         
+         // Event listener for the upload button click
+         upload.addEventListener('click', () => {
+            let file = pdfinput.files[0]; // Get the selected PDF file
+            if (file != undefined && file.type == "application/pdf") {
+               let fr = new FileReader(); // Create a new FileReader object
+               fr.readAsDataURL(file); // Read the file as data URL 
+               fr.onload = () => {
+                  let res = fr.result; // Get the result of file reading
+                  extractText(res, true); // Extract text with password    
+               }
+            } else {
+               alert("Select a valid PDF file");
+            }
+         });
+      
+         // Asynchronous function to extract text from the PDF
+         async function extractText(url, pass) {
+            try {
+               let pdf;
+               if (pass) {
+                  pdf = await pdfjsLib.getDocument({ url: url }).promise; // Get the PDF document with password
+               } else {
+                  pdf = await pdfjsLib.getDocument(url).promise; // Get the PDF document without password
+               }
+               let pages = pdf.numPages; // Get the total number of pages in the PDF
+               let alltext = ""; // Initialize variable to store all extracted text
+               for (let i = 1; i <= pages; i++) {
+                  let page = await pdf.getPage(i); // Get the page object for each page
+                  let txt = await page.getTextContent(); // Get the text content of the page
+                  let text = txt.items.map((s) => s.str).join(""); // Concatenate the text items into a single string
+                  alltext += text + "\n"; // Add the extracted text to the variable
+               }
+               // Open a new window to display the extracted text
+               let newWindow = window.open("", "Extracted Text", "width=600,height=400");
+               newWindow.document.write("<pre>" + alltext + "</pre>"); // Write the extracted text to the new window
+               // Generate quiz for the extracted text
+               generateQuiz(alltext);
+            } catch (err) {
+               alert(err.message);
+            }
+         }
+
+         // Function to generate quiz for the extracted text
+         function generateQuiz(text) {
+            // Call the function to generate quiz questions using the extracted text
+            generateQuizAPI(text);
+         }
+      </script>
+
+      <!-- Include the OpenAI API script -->
+      <!-- <script src="api.js"></script> -->
+
    </body>
-   <script src="js/slider.js"></script>
 </html>

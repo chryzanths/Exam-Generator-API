@@ -1,0 +1,45 @@
+{
+    "qna": [
+      {
+        "question": "What is the brain of the computer?",
+        "answer": "CPU"
+      },
+      {
+        "question": "What type of memory provides temporary storage for data?",
+        "answer": "RAM"
+      },
+      {
+        "question": "What type of devices allow users to interact with computers?",
+        "answer": "Input"
+      },
+      {
+        "question": "What type of devices display information or produce tangible results?",
+        "answer": "Output"
+      },
+      {
+        "question": "How many digits does binary code use?",
+        "answer": "Two"
+      },
+      {
+        "question": "What type of devices are hard disk drives and solid-state drives?",
+        "answer": "Storage"
+      },
+      {
+        "question": "What system does computers operate using?",
+        "answer": "Binary"
+      },
+      {
+        "question": "What type of computers are tailored to specific needs and applications?",
+        "answer": "Personal"
+      },
+      {
+        "question": "What has the internet transformed?",
+        "answer": "Communication"
+      },
+      {
+        "question": "What role are computers expected to play in the future?",
+        "answer": "Significant"
+      }
+    ]
+  }
+  

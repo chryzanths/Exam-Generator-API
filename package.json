@@ -1,0 +1,17 @@
+{
+  "name": "exam-generator-api",
+  "version": "1.0.0",
+  "description": "!! You have to make an uploads folder. It is not included here in due to github not saving empty folders. Name it 'uploads'!!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "express-fileupload": "^1.5.0",
+    "pdf-parse": "^1.1.1"
+  }
+}

@@ -13,7 +13,12 @@
             $uploadDir = 'uploads/'; // Specify the destination directory
             $uploadPath = $uploadDir . $fileName;
 
-        // Move the uploaded file to the destination directory
+            // Check if the upload directory exists, if not, create it
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+
+            // Move the uploaded file to the destination directory
             if (move_uploaded_file($tmpName, $uploadPath)) {
                 $uploadedFiles[] = array(
                     'name' => $fileName,
@@ -43,7 +48,6 @@
         } else {
             echo "<p>No files uploaded.</p>";
         }
-
     }
 
 ?>
