@@ -231,8 +231,8 @@
                console.log(alltext);
             }
             // Open a new window to display the extracted text
-            let newWindow = window.open("", "Extracted Text", "width=600,height=400");
-            newWindow.document.write("<pre>" + alltext + "</pre>"); // Write the extracted text to the new window
+            //let newWindow = window.open("", "Extracted Text", "width=600,height=400");
+            //newWindow.document.write("<pre>" + alltext + "</pre>"); // Write the extracted text to the new window
             // Generate quiz for the extracted text
             //generateQuiz(alltext);
          } catch (err) {
