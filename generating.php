@@ -7,7 +7,10 @@
       <script src="js/jquery.js"></script>
       <script src="js/bootstrap.min.js"></script>
       <script type="module" src="api.js"></script>
+      <!-- Integrate the downloadFile.js file -->
+      <!-- <script src="downloadFile.js"></script>  -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 
       <style>
 
@@ -41,11 +44,9 @@
    <body>
       
       <?php
-         
          session_start();
 
          if(!empty($_POST)){
-
             $title = $_POST['title'];
             $difficulty = $_POST['difficulty'];
             $type = $_POST['type'];
@@ -59,16 +60,12 @@
             ];
 
             $_SESSION['customInfo'] = $customInfo;
-
          }
-
       ?>
 
       <!-- Navbar -->
-
       <nav class="navbar navbar-inverse navbar-fixed-top" style="margin-bottom: 50px;">
          <div class="container">
-
             <div class="navbar-header">
                <div class="navbar-brand"><a href="#" data-toggle="modal" data-target="#confirmationModal">NEUPaperTrail</a></div>
             </div>
@@ -88,16 +85,14 @@
                <div class="modal-header">
                   <button class="close" data-dismiss="modal">&times;</button>
                   <h5 class="modal-title">Confirmation</h5>
-
                </div>
 
                <div class="modal-body">
-                  Are you sure you want to go back to home page? <br/>
+                  Are you sure you want to go back to the home page? <br/>
                   The data you submitted or exam progress will be deleted.
                </div>
 
                <div class="modal-footer">
-                  
                   <form action="index.php">
                      <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
                      <button type="submit" class="btn btn-danger">Go back to home page</button>
@@ -109,18 +104,15 @@
       </div>
       
       <!-- Title Part And Content-->
-
       <div class="container-fluid">  
          <section class="d-flex align-items-center justify-content-center">
             <div class="text-center">
-
                <h1><strong>Generating Exam...</strong></h1>
                <p>Please wait for a moment.</p>
 
                <br/>
 
                <?php
-
                   $customInfo = $_SESSION['customInfo'];
 
                   switch($customInfo['type']) {
@@ -140,17 +132,20 @@
                               <button type='submit' class='btn btn-block'>Take Quiz</button>
                            </div>
                         </form>"
-
                ?>
 
+               <br/><br/><br/>
+
+               <div class='col-md-2 col-md-offset-5'>
+                  <button onclick="downloadFile()" class="btn btn-block">Download PDF</button>
+               </div>
+               
             </div>
          </section>
 
          <section>
             <?php
-               
                $customInfo = $_SESSION['customInfo'];
-
                $title = $customInfo['title'];
                $difficulty = $customInfo['difficulty'];
                $type = $customInfo['type'];
@@ -174,10 +169,8 @@
                echo "<h3><strong>Quiz Type: </strong></h3><h4>$q_type </h4>";
                echo "<h3><strong>Number of Questions: </strong></h3><h4>$items</h4>";
                echo "</div>";
-
             ?>
          </section>
-
       </div>
 
       <footer class="navbar navbar-default navbar-fixed-bottom">
@@ -188,12 +181,10 @@
 
    </body>
    <script>
-
       pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
       <?php
       $uploadedFiles = array();
-
       foreach ($_SESSION['uploadedFiles'] as $file) {
          $uploadedFiles[] = $file['path'];
       }
@@ -201,6 +192,10 @@
 
       let uploadedfiles = <?php echo json_encode($uploadedFiles); ?>;
       console.log(uploadedfiles);
+      let type = "<?php echo $type; ?>";
+      console.log(type);
+      let title = "<?php echo $title; ?>";
+      console.log(title);
       let alltext=""; // Initialize variable to store all extracted text
 
       uploadedfiles.forEach(file => {
@@ -222,13 +217,9 @@
             let pages = pdf.numPages; // Get the total number of pages in the PDF
             for (let i = 1; i <= pages; i++) {
                let page = await pdf.getPage(i); // Get the page object for each page
-               console.log(page);
                let txt = await page.getTextContent(); // Get the text content of the page
-               console.log(txt);
                let text = txt.items.map((s) => s.str).join(""); // Concatenate the text items into a single string
-               console.log(text);
                alltext += text + "\n"; // Add the extracted text to the variable
-               console.log(alltext);
             }
             // Open a new window to display the extracted text
             //let newWindow = window.open("", "Extracted Text", "width=600,height=400");
@@ -238,8 +229,111 @@
          } catch (err) {
             console.log("Error extracting text: ", err);
          }
+      } 
+
+      async function downloadFile() {
+         try {
+            const filename = "<?php echo $title; ?>.pdf"; // yung $title is yun yung magiging file name
+
+            // setting attributes at format nung paper chuchu di ko alam to, basta sabi ni jason sa stackoverflow gumagana daw to
+            const opt = {
+                  margin: 1,
+                  filename: filename,
+                  image: { type: 'jpeg', quality: 0.98 },
+                  html2canvas: { scale: 2.5 },
+                  jsPDF: {
+                     unit: 'in',
+                     format: 'letter',
+                     orientation: 'portrait',
+                     html2canvas: { scale: 2 },
+                     pagebreak: { mode: 'avoid-all' }
+                  }
+            };
+
+            let content = await pdfContentHandler(type, title);
+
+            await html2pdf().set(opt).from(content).save();
+         } catch (error) { // error handling
+            console.error('Error:', error.message);
+         }
       }
 
+      pdfContentHandler = async (type, title) => {
+
+         switch(type) {
+            case "mcq":  return await mcqFormat(title);
+            case "tof":  return await tofFormat(title);
+            case "owa":  return await owaFormat(title);
+         }
+
+      }
+
+      mcqFormat = async (title) => {
+         const file = 'QandA/mcq/sample_mcq.json';
+         let indexCounter = 1;
+         let output = `<h3 align='center'>${title}</h3>`;
+         
+         try {
+            let response = await fetch(file);
+            let data = await response.json();
+
+            data.qna.forEach(element => {
+               let q = element.question;
+               let a = element.A;
+               let b = element.B;
+               let c = element.C;
+               let d = element.D;
+               let answer = element.answer;
+               output += `<p><strong>${indexCounter}.${q}</strong></p>`;
+               output += `<p>A. ${a}</p>`;
+               output += `<p>B. ${b}</p>`;
+               output += `<p>C. ${c}</p>`;
+               output += `<p>D. ${d}</p>`;
+               output += `<p><strong>Answer: ${answer}</strong></p>`;
+               output += `<br/>`;
+               
+               // naglagay ako ganto kasi pinuputol niya yung text pag di na kasya instead of moving it to another page
+
+               if(indexCounter%4 == 0){
+                  output += `<br/>`;
+               }
+
+               indexCounter++;
+            });
+
+         } catch (error) {
+            console.error("error", error);
+         }
+
+         return output;
+         
+      }
+
+      owaFormat = async (title) => {
+         const file = 'QandA/des/sample_des.json';
+         let indexCounter = 1;
+         let output = `<h3 align='center'>${title}</h3>`;
+         
+         try {
+            let response = await fetch(file);
+            let data = await response.json();
+
+            data.qna.forEach(element => {
+               let q = element.question;
+               let answer = element.answer;
+               output += `<p><strong>${indexCounter}.${q}</strong></p>`;
+               output += `<p>Answer: ${answer}</p>`;
+               indexCounter++;
+            });
+
+         } catch (error) {
+            console.error("error", error);
+         }
+
+         return output;
+         
+      }
 
    </script>
+   
 </html>
