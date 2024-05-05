@@ -115,14 +115,14 @@
 
                <br/>
 
-               <form action="upload.php" method="POST" enctype="multipart/form-data" target="showUploads">
+               <form id="fileUploadForm" action="upload.php" method="POST" enctype="multipart/form-data" target="showUploads">
 
                   <div class="col-md-5 col-md-offset-3">
                      <input class="form-control" type="file" name="files[]" accept=".pdf" multiple>
                   </div>
 
                   <div class="col-md-2">
-                     <button type="submit" class="btn">Upload</button>
+                     <button id="fileUploadButton" type="submit" class="btn">Upload</button>
                   </div>
 
                </form>
@@ -207,7 +207,7 @@
 
                <div class="form-group">
                   <div class="col-md-2 col-md-offset-5">
-                     <button class="btn-block generate">Generate</button>
+                     <button id="generateButton" class="btn btn-block generate" disabled >Generate</button>
                   </div>
                </div>
                
@@ -223,67 +223,33 @@
          </div>
       </footer>
 
-      <!-- Script for extracting and displaying text in a new window -->
-      <script>
-         // Set the worker source for PDF.js library
-         pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
-      
-         // Get references to various elements
-         let pdfinput = document.querySelector(".selectpdf"); // Reference to the PDF file input field
-         let upload = document.querySelector(".upload"); // Reference to the upload button
-         let generateBtn = document.querySelector(".generate"); // Reference to the generate button
-         
-         // Event listener for the upload button click
-         upload.addEventListener('click', () => {
-            let file = pdfinput.files[0]; // Get the selected PDF file
-            if (file != undefined && file.type == "application/pdf") {
-               let fr = new FileReader(); // Create a new FileReader object
-               fr.readAsDataURL(file); // Read the file as data URL 
-               fr.onload = () => {
-                  let res = fr.result; // Get the result of file reading
-                  extractText(res, true); // Extract text with password    
-               }
-            } else {
-               alert("Select a valid PDF file");
-            }
-         });
-      
-         // Asynchronous function to extract text from the PDF
-         async function extractText(url, pass) {
-            try {
-               let pdf;
-               if (pass) {
-                  pdf = await pdfjsLib.getDocument({ url: url }).promise; // Get the PDF document with password
-               } else {
-                  pdf = await pdfjsLib.getDocument(url).promise; // Get the PDF document without password
-               }
-               let pages = pdf.numPages; // Get the total number of pages in the PDF
-               let alltext = ""; // Initialize variable to store all extracted text
-               for (let i = 1; i <= pages; i++) {
-                  let page = await pdf.getPage(i); // Get the page object for each page
-                  let txt = await page.getTextContent(); // Get the text content of the page
-                  let text = txt.items.map((s) => s.str).join(""); // Concatenate the text items into a single string
-                  alltext += text + "\n"; // Add the extracted text to the variable
-               }
-               // Open a new window to display the extracted text
-               let newWindow = window.open("", "Extracted Text", "width=600,height=400");
-               newWindow.document.write("<pre>" + alltext + "</pre>"); // Write the extracted text to the new window
-               // Generate quiz for the extracted text
-               generateQuiz(alltext);
-            } catch (err) {
-               alert(err.message);
-            }
-         }
-
-         // Function to generate quiz for the extracted text
-         function generateQuiz(text) {
-            // Call the function to generate quiz questions using the extracted text
-            generateQuizAPI(text);
-         }
-      </script>
-
-      <!-- Include the OpenAI API script -->
-      <!-- <script src="api.js"></script> -->
-
    </body>
+
+   <script>
+      const uploadButton = document.getElementById("fileUploadButton");
+      const generateButton = document.getElementById("generateButton");
+
+      function checkUploads() {
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "check_uploads.php", true);
+            xhr.onreadystatechange = function() {
+               if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status === 200) {
+                     // Directory is not empty, enable the generateButton
+                     generateButton.disabled = false;
+                  } else {
+                     // Directory is empty, disable the generateButton
+                     generateButton.disabled = true;
+                  }
+               }
+            };
+            xhr.send();
+        }
+
+      document.getElementById("fileUploadForm").addEventListener("submit", function() {
+            setTimeout(checkUploads, 1000); // Delay to allow time for file upload to complete
+      });
+
+
+   </script>
 </html>
