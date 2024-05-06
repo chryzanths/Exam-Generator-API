@@ -6,14 +6,10 @@
       <link rel="stylesheet" href="css/bootstrap-theme.min.css">
       <script src="js/jquery.js"></script>
       <script src="js/bootstrap.min.js"></script>
-      <script type="module" src="api.js"></script>
-      <!-- Integrate the downloadFile.js file -->
-      <!-- <script src="downloadFile.js"></script>  -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js" integrity="sha512-ml/QKfG3+Yes6TwOzQb7aCNtJF4PUyha6R3w8pSTo/VJSywl7ZreYvvtUso7fKevpsI+pYVVwnu82YO0q3V6eg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
       <style>
-
          body {
             padding-bottom: 100px;
             padding-top: 100px;
@@ -28,7 +24,6 @@
             width: 100%;
             padding: 50px;
          }
-
          
          button {
             border-radius: 10px;
@@ -36,9 +31,7 @@
             color: #FFFFFF;
             padding: 5px;
          }
-
       </style>
-
    </head>
 
    <body>
@@ -81,7 +74,6 @@
       <div class="modal fade" id="confirmationModal">
          <div class="modal-dialog">
             <div class="modal-content">
-
                <div class="modal-header">
                   <button class="close" data-dismiss="modal">&times;</button>
                   <h5 class="modal-title">Confirmation</h5>
@@ -98,7 +90,6 @@
                      <button type="submit" class="btn btn-danger">Go back to home page</button>
                   </form>   
                </div>
-
             </div>
          </div>
       </div>
@@ -137,7 +128,7 @@
                <br/><br/><br/>
 
                <div class='col-md-2 col-md-offset-5'>
-                  <button onclick="downloadFile()" class="btn btn-block">Download PDF</button>
+                  <button id="download" onclick="downloadFile('<?php echo $type; ?>', '<?php echo $title; ?>')">Download as PDF</button>
                </div>
                
             </div>
@@ -181,159 +172,112 @@
 
    </body>
    <script>
-      pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js";
 
-      <?php
-      $uploadedFiles = array();
-      foreach ($_SESSION['uploadedFiles'] as $file) {
-         $uploadedFiles[] = $file['path'];
-      }
-      ?>
-
-      let uploadedfiles = <?php echo json_encode($uploadedFiles); ?>;
-      console.log(uploadedfiles);
-      let type = "<?php echo $type; ?>";
-      console.log(type);
-      let title = "<?php echo $title; ?>";
-      console.log(title);
-      let alltext=""; // Initialize variable to store all extracted text
-
-      uploadedfiles.forEach(file => {
-         extractText(file, false);
-      });
-
-      async function extractText(url, pass) {
-         try {
-            console.log("URL:", url); // Debugging statement
-            let pdf;
-            if (pass) {
-               pdf = await pdfjsLib.getDocument({ url: url }).promise; // Get the PDF document with password
-            } else {
-               pdf = await pdfjsLib.getDocument(url).promise; // Get the PDF document without password
-            }
-            
-            console.log(pdf);
-
-            let pages = pdf.numPages; // Get the total number of pages in the PDF
-            for (let i = 1; i <= pages; i++) {
-               let page = await pdf.getPage(i); // Get the page object for each page
-               let txt = await page.getTextContent(); // Get the text content of the page
-               let text = txt.items.map((s) => s.str).join(""); // Concatenate the text items into a single string
-               alltext += text + "\n"; // Add the extracted text to the variable
-            }
-            // Open a new window to display the extracted text
-            //let newWindow = window.open("", "Extracted Text", "width=600,height=400");
-            //newWindow.document.write("<pre>" + alltext + "</pre>"); // Write the extracted text to the new window
-            // Generate quiz for the extracted text
-            //generateQuiz(alltext);
-         } catch (err) {
-            console.log("Error extracting text: ", err);
-         }
-      } 
-
-      async function downloadFile() {
-         try {
-            const filename = "<?php echo $title; ?>.pdf"; // yung $title is yun yung magiging file name
-
-            // setting attributes at format nung paper chuchu di ko alam to, basta sabi ni jason sa stackoverflow gumagana daw to
-            const opt = {
-                  margin: 1,
-                  filename: filename,
-                  image: { type: 'jpeg', quality: 0.98 },
-                  html2canvas: { scale: 2.5 },
-                  jsPDF: {
-                     unit: 'in',
-                     format: 'letter',
-                     orientation: 'portrait',
-                     html2canvas: { scale: 2 },
-                     pagebreak: { mode: 'avoid-all' }
-                  }
-            };
-
+    async function downloadFile(type, title) {
+        try {
             let content = await pdfContentHandler(type, title);
-
-            await html2pdf().set(opt).from(content).save();
-         } catch (error) { // error handling
+            var doc = new jsPDF();
+            const margins = {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                width: 180
+            };
+            doc.setFontSize(10); // Set font size
+            addText(doc, content, margins);
+            doc.save(`${title}.pdf`);
+        } catch (error) {
             console.error('Error:', error.message);
-         }
-      }
+        }
+    }
 
-      pdfContentHandler = async (type, title) => {
+    function addText(doc, text, margins) {
+        let lineHeight = doc.getLineHeight();
+        let lines = doc.splitTextToSize(text, margins.width);
+        let cursorY = 10; // Initial cursor position
 
-         switch(type) {
-            case "mcq":  return await mcqFormat(title);
-            case "tof":  return await tofFormat(title);
-            case "owa":  return await owaFormat(title);
-         }
+        lines.forEach(line => {
+            if (cursorY + lineHeight > doc.internal.pageSize.height - margins.bottom) {
+                doc.addPage(); // Add new page if content exceeds current page height
+                cursorY = margins.top; // Reset cursor position
+            }
+            doc.text(margins.left, cursorY, line);
+            cursorY += lineHeight; // Move cursor to next line
+        });
+    }
 
-      }
+    pdfContentHandler = async (type, title) => {
+        switch (type) {
+            case "mcq":
+                return await mcqFormat(title);
+            case "tof":
+                return await tofFormat(title);
+            case "owa":
+                return await owaFormat(title);
+        }
+    }
 
-      mcqFormat = async (title) => {
-         const file = 'QandA/mcq/sample_mcq.json';
-         let indexCounter = 1;
-         let output = `<h3 align='center'>${title}</h3>`;
-         
-         try {
+    mcqFormat = async (title) => {
+        const file = 'QandA/mcq/sample_mcq.json';
+        let indexCounter = 1;
+        let output = `${title}\n\n`;
+        
+        try {
             let response = await fetch(file);
             let data = await response.json();
 
             data.qna.forEach(element => {
-               let q = element.question;
-               let a = element.A;
-               let b = element.B;
-               let c = element.C;
-               let d = element.D;
-               let answer = element.answer;
-               output += `<p><strong>${indexCounter}.${q}</strong></p>`;
-               output += `<p>A. ${a}</p>`;
-               output += `<p>B. ${b}</p>`;
-               output += `<p>C. ${c}</p>`;
-               output += `<p>D. ${d}</p>`;
-               output += `<p><strong>Answer: ${answer}</strong></p>`;
-               output += `<br/>`;
-               
-               // naglagay ako ganto kasi pinuputol niya yung text pag di na kasya instead of moving it to another page
+                let q = element.question;
+                let a = element.A;
+                let b = element.B;
+                let c = element.C;
+                let d = element.D;
+                let answer = element.answer;
+                output += `${indexCounter}. ${q}\n`;
+                output += `A. ${a}\n`;
+                output += `B. ${b}\n`;
+                output += `C. ${c}\n`;
+                output += `D. ${d}\n`;
+                output += `Answer: ${answer}\n\n`;
 
-               if(indexCounter%4 == 0){
-                  output += `<br/>`;
-               }
+                if (indexCounter % 4 == 0) {
+                    output += `\n`;
+                }
 
-               indexCounter++;
+                indexCounter++;
             });
 
-         } catch (error) {
+        } catch (error) {
             console.error("error", error);
-         }
+        }
 
-         return output;
-         
-      }
+        return output;
+    }
 
-      owaFormat = async (title) => {
-         const file = 'QandA/des/sample_des.json';
-         let indexCounter = 1;
-         let output = `<h3 align='center'>${title}</h3>`;
-         
-         try {
+    owaFormat = async (title) => {
+        const file = 'QandA/des/sample_des.json';
+        let indexCounter = 1;
+        let output = `${title}\n\n`;
+        
+        try {
             let response = await fetch(file);
             let data = await response.json();
 
             data.qna.forEach(element => {
-               let q = element.question;
-               let answer = element.answer;
-               output += `<p><strong>${indexCounter}.${q}</strong></p>`;
-               output += `<p>Answer: ${answer}</p>`;
-               indexCounter++;
+                let q = element.question;
+                let answer = element.answer;
+                output += `${indexCounter}. ${q}\n`;
+                output += `Answer: ${answer}\n\n`;
+                indexCounter++;
             });
 
-         } catch (error) {
+        } catch (error) {
             console.error("error", error);
-         }
+        }
 
-         return output;
-         
-      }
+        return output;
+    }
+</script>
 
-   </script>
-   
 </html>
