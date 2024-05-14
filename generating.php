@@ -185,6 +185,12 @@
                 width: 180
             };
             doc.setFontSize(10); // Set font size
+
+            // Add centered title
+            doc.setFontSize(16); // Set title font size
+            doc.text(title, doc.internal.pageSize.width / 2, margins.top, { align: 'center' });
+            doc.setFontSize(10); // Reset font size for content
+
             addText(doc, content, margins);
             doc.save(`${title}.pdf`);
         } catch (error) {
@@ -195,7 +201,7 @@
     function addText(doc, text, margins) {
         let lineHeight = doc.getLineHeight();
         let lines = doc.splitTextToSize(text, margins.width);
-        let cursorY = 10; // Initial cursor position
+        let cursorY = margins.top + 20; // Initial cursor position, adjusted for title
 
         lines.forEach(line => {
             if (cursorY + lineHeight > doc.internal.pageSize.height - margins.bottom) {
@@ -221,8 +227,8 @@
     mcqFormat = async (title) => {
         const file = 'QandA/mcq/sample_mcq.json';
         let indexCounter = 1;
-        let output = `${title}\n\n`;
-        
+        let output = ``;
+
         try {
             let response = await fetch(file);
             let data = await response.json();
@@ -258,7 +264,7 @@
     owaFormat = async (title) => {
         const file = 'QandA/des/sample_des.json';
         let indexCounter = 1;
-        let output = `${title}\n\n`;
+        let output = ``;
         
         try {
             let response = await fetch(file);
